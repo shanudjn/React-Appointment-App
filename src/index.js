@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.css'
+import App from './components/App';
+import './css/index.css';
+import 'jquery/dist/jquery.js';
+import 'popper.js/dist/umd/popper.js';
+import 'bootstrap/dist/js/bootstrap.js';
 
 ReactDOM.render(
   <App />,
