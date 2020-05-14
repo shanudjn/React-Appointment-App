@@ -5,18 +5,26 @@ import SearchAppointments from './SearchAppointments';
 
 import '../css/App.css';
 
+import {without} from 'lodash';
+
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      myAppointments : []
+      myAppointments : [],
+      lastIndex : 0
     }
+    this.deleteAppointment = this.deleteAppointment.bind(this);
   }
   componentDidMount(){
     fetch('./data.json')
       .then(response => response.json())
       .then(result => {
         const apts = result.map(item => {
+          item.aptId = this.state.lastIndex;
+          this.setState({
+            lastIndex : this.state.lastIndex + 1
+          })
           return item;
         })
         this.setState({
@@ -25,28 +33,29 @@ class App extends Component {
       }) 
 
   }
+  deleteAppointment(apt){
+    //we can never directly call the state, we always need to use a varible to assign that state to it.
+    let tempApts = this.state.myAppointments;
+    tempApts = without(tempApts, apt);//lodash function.
+    this.setState({
+      myAppointments : tempApts
+    })
+
+  }
 
   render() {
-    // notice we are using a parenthesis after item=>. This is because we want it return a JSX expression.
-    const listItems = this.state.myAppointments.map(item => 
-      (
-        <div>
-          <div>{item.petName}</div>
-          <div>{item.ownerName}</div>
-        </div>
-      )   
-      /*we can use a return statement here in place of this short cut in place of the upper line*/ 
-    );
+
     return (
       <main className="page bg-white" id="petratings">
       <div className="container">
         <div className="row">
           <div className="col-md-12 bg-white">
             <div className="container">
-              {listItems}
+              
               <AddAppointments/>
-              <ListAppointments/>
               <SearchAppointments/>
+              <ListAppointments appointments={this.state.myAppointments} deleteAppointment={this.deleteAppointment}/>
+
             </div>
           </div>
         </div>
