@@ -12,9 +12,11 @@ class App extends Component {
     super();
     this.state = {
       myAppointments : [],
+      formDisplay : true,
       lastIndex : 0
     }
     this.deleteAppointment = this.deleteAppointment.bind(this);
+    this.toggleForm = this.toggleForm.bind(this);
   }
   componentDidMount(){
     fetch('./data.json')
@@ -33,6 +35,11 @@ class App extends Component {
       }) 
 
   }
+  toggleForm(){
+    this.setState({
+      formDisplay : !this.state.formDisplay,
+    })
+  }
   deleteAppointment(apt){
     //we can never directly call the state, we always need to use a varible to assign that state to it.
     let tempApts = this.state.myAppointments;
@@ -40,7 +47,6 @@ class App extends Component {
     this.setState({
       myAppointments : tempApts
     })
-
   }
 
   render() {
@@ -52,7 +58,7 @@ class App extends Component {
           <div className="col-md-12 bg-white">
             <div className="container">
               
-              <AddAppointments/>
+              <AddAppointments formDisplay={this.state.formDisplay} toggleForm={this.toggleForm}/>
               <SearchAppointments/>
               <ListAppointments appointments={this.state.myAppointments} deleteAppointment={this.deleteAppointment}/>
 
