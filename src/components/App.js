@@ -20,6 +20,8 @@ class App extends Component {
     this.deleteAppointment = this.deleteAppointment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
+    this.changeOrder = this.changeOrder.bind(this);
+
   }
   componentDidMount(){
     fetch('./data.json')
@@ -41,6 +43,12 @@ class App extends Component {
   toggleForm(){
     this.setState({
       formDisplay : !this.state.formDisplay,
+    })
+  }
+  changeOrder(order, dir){
+    this.setState({
+      orderBy:order,
+      orderDir:dir
     })
   }
   deleteAppointment(apt){
@@ -70,7 +78,7 @@ class App extends Component {
       order = -1;
     }
     filteredApts.sort((a, b) => {
-      if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()){
+      if(a[this.state.orderBy].toLowerCase() > b[this.state.orderBy].toLowerCase()){
         return -1 * order;
       }
       else{
@@ -86,7 +94,7 @@ class App extends Component {
             <div className="container">
               
               <AddAppointments formDisplay={this.state.formDisplay} toggleForm={this.toggleForm} addAppointment={this.addAppointment}/>
-              <SearchAppointments/>
+              <SearchAppointments changeOrder={this.changeOrder}/>
               <ListAppointments 
                 appointments={filteredApts} 
                 deleteAppointment={this.deleteAppointment}                  
