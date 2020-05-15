@@ -15,14 +15,14 @@ class App extends Component {
       formDisplay : true,
       orderBy : 'petName',
       orderDir: 'desc',
-      querytext: 'Bailey',
+      querytext: '',
       lastIndex : 0
     }
     this.deleteAppointment = this.deleteAppointment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
     this.changeOrder = this.changeOrder.bind(this);
-
+    this.searchApts = this.searchApts.bind(this);
   }
   componentDidMount(){
     fetch('./data.json')
@@ -69,6 +69,11 @@ class App extends Component {
       lastIndex:this.state.lastIndex  +1
     })
   }
+  searchApts(query){
+    this.setState({
+      querytext:query
+    });
+  }
 
   render() {
     let order;
@@ -107,7 +112,7 @@ class App extends Component {
             <div className="container">
               
               <AddAppointments formDisplay={this.state.formDisplay} toggleForm={this.toggleForm} addAppointment={this.addAppointment}/>
-              <SearchAppointments changeOrder={this.changeOrder}/>
+              <SearchAppointments changeOrder={this.changeOrder} searchApts={this.searchApts}/>
               <ListAppointments 
                 appointments={filteredApts} 
                 deleteAppointment={this.deleteAppointment}                  
